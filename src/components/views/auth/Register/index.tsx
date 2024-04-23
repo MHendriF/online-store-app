@@ -2,6 +2,8 @@ import Link from "next/link";
 import styles from "./Register.module.scss";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export default function RegisterView() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,16 +12,21 @@ export default function RegisterView() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
     const form = e.target as HTMLFormElement;
+    if (form.email.value === "") {
+      setError("Email is empty");
+      setIsLoading(false);
+      return;
+    }
     const data = {
       email: form.email.value,
       fullname: form.fullname.value,
       phone: form.phone.value,
       password: form.password.value,
     };
-
-    setError("");
-    setIsLoading(true);
 
     const result = await fetch("/api/user/register", {
       method: "POST",
@@ -45,73 +52,37 @@ export default function RegisterView() {
       {error && <p className={styles.register__error}>{error}</p>}
       <div className={styles.register__form}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="email"
-              className={styles.register__form__item__label}
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="example@email.com"
-              className={styles.register__form__item__input}
-            ></input>
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="fullname"
-              className={styles.register__form__item__label}
-            >
-              Fullname
-            </label>
-            <input
-              type="text"
-              id="fullname"
-              name="fullname"
-              placeholder="John Doe"
-              className={styles.register__form__item__input}
-            ></input>
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="phone"
-              className={styles.register__form__item__label}
-            >
-              Phone
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              placeholder="08123456789"
-              className={styles.register__form__item__input}
-            ></input>
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="password"
-              className={styles.register__form__item__label}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="*****"
-              className={styles.register__form__item__input}
-            ></input>
-          </div>
-          <button
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="example@mail.com"
+          />
+          <Input
+            label="Fullname"
+            name="fullname"
+            type="text"
+            placeholder="John Doe"
+          />
+          <Input
+            label="Phone"
+            name="phone"
+            type="text"
+            placeholder="08123456789"
+          />
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="*****"
+          />
+          <Button
             type="submit"
+            variant="primary"
             className={styles.register__form__button}
-            disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Register"}
-          </button>
+          </Button>
         </form>
       </div>
       <p className={styles.register__link}>

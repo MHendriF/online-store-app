@@ -3,6 +3,8 @@ import styles from "./Login.module.scss";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export default function LoginView() {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,10 +14,16 @@ export default function LoginView() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-
     setError("");
     setIsLoading(true);
+
+    const form = e.target as HTMLFormElement;
+    if (form.email.value === "") {
+      setError("Email is empty");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await signIn("credentials", {
         redirect: false,
@@ -43,44 +51,31 @@ export default function LoginView() {
       {error && <p className={styles.login__error}>{error}</p>}
       <div className={styles.login__form}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.login__form__item}>
-            <label htmlFor="email" className={styles.login__form__item__label}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="example@email.com"
-              className={styles.login__form__item__input}
-            ></input>
-          </div>
-          <div className={styles.login__form__item}>
-            <label
-              htmlFor="password"
-              className={styles.login__form__item__label}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="*****"
-              className={styles.login__form__item__input}
-            ></input>
-          </div>
-          <button
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="example@mail.com"
+          />
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="*****"
+          />
+          <Button
             type="submit"
+            variant="primary"
             className={styles.login__form__button}
-            disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Login"}
-          </button>
+          </Button>
         </form>
         <hr className={styles.login__form__devider} />
         <div className={styles.login__form__other}>
-          <button
+          <Button
+            type="button"
+            variant="primary"
             onClick={() =>
               signIn("google", {
                 callbackUrl,
@@ -90,7 +85,7 @@ export default function LoginView() {
             className={styles.login__form__other__button}
           >
             <i className="bx bxl-google"></i>Sign In With Google
-          </button>
+          </Button>
         </div>
       </div>
       <p className={styles.login__link}>
