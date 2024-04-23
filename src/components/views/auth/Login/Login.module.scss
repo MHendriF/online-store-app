@@ -14,9 +14,9 @@
     margin-bottom: 10px;
   }
   &__form {
-    width: 50%;
+    width: 30%;
     padding: 20px;
-    box-shadow: 0 0 3px rgba($color: #000, $alpha: 0.5);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     margin-bottom: 20px;
     &__item {
       display: flex;
@@ -34,8 +34,29 @@
       background-color: #000;
       color: #eee;
       width: 100%;
-      padding: 10px;
+      padding: 15px;
       border: none;
+    }
+    &__devider {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    &__other {
+      width: 100%;
+      &__button {
+        background-color: #000;
+        color: #eee;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        i {
+          font-size: 24px;
+        }
+      }
     }
     &__google {
       width: 100%;

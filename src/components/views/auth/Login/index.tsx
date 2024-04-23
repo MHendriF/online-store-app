@@ -78,17 +78,20 @@ export default function LoginView() {
             {isLoading ? "Loading..." : "Login"}
           </button>
         </form>
-        <button
-          onClick={() =>
-            signIn("google", {
-              callbackUrl,
-              redirect: false,
-            })
-          }
-          className={styles.login__form__google}
-        >
-          Sign In With Google
-        </button>
+        <hr className={styles.login__form__devider} />
+        <div className={styles.login__form__other}>
+          <button
+            onClick={() =>
+              signIn("google", {
+                callbackUrl,
+                redirect: false,
+              })
+            }
+            className={styles.login__form__other__button}
+          >
+            <i className="bx bxl-google"></i>Sign In With Google
+          </button>
+        </div>
       </div>
       <p className={styles.login__link}>
         Don{"'"}t an account? Sign up <Link href="/auth/register">here</Link>
