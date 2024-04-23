@@ -49,6 +49,7 @@ export async function signUp(
     email: string;
     fullname: string;
     password: string;
+    phone: string;
     role?: string;
   },
   callback: Function
