@@ -63,6 +63,7 @@ export async function signUp(
     id: doc.id,
     ...doc.data(),
   }));
+  console.log(data);
   if (data.length > 0) {
     callback({ status: false, message: "Email already exists" });
   } else {
