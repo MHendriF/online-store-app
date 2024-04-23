@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./Login.module.scss";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
@@ -10,18 +10,21 @@ export default function LoginView() {
   const { push, query } = useRouter();
   const callbackUrl: any = query.callbackUrl || "/";
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+
     setError("");
     setIsLoading(true);
     try {
       const res = await signIn("credentials", {
         redirect: false,
-        email: e.target.email.value,
-        password: e.target.password.value,
+        email: form.email.value,
+        password: form.password.value,
         callbackUrl,
       });
       if (!res?.error) {
+        form.reset();
         setIsLoading(false);
         push(callbackUrl);
       } else {
@@ -48,7 +51,7 @@ export default function LoginView() {
               type="email"
               id="email"
               name="email"
-              placeholder="email"
+              placeholder="example@email.com"
               className={styles.login__form__item__input}
             ></input>
           </div>
