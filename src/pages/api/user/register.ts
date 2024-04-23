@@ -1,4 +1,4 @@
-import { signUp } from "@/services/auth";
+import { signUp } from "@/services/auth/services";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {

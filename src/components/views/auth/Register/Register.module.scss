@@ -1,31 +1,5 @@
 .register {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  &__title {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-  &__error {
-    color: #fd3131;
-    margin-bottom: 10px;
-  }
-  &__form {
-    width: 30%;
-    padding: 20px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
-    &__button {
-      width: 100%;
-    }
-  }
-  &__link {
-    a {
-      color: #23bebe;
-      font-weight: bold;
-    }
+  &__button {
+    width: 100%;
   }
 }
