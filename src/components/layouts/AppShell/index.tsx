@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import { Lato } from "next/font/google";
 import dynamic from "next/dynamic";
 
-const Navbar = dynamic(() => import("../Navbar"), { ssr: false });
+const Navbar = dynamic(() => import("@/components/fragments/Navbar"), {
+  ssr: false,
+});
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -13,7 +15,7 @@ const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
 });
 
-const disableNavbar = ["/auth/login", "/auth/register", "/404"];
+const disableNavbar = ["auth", "404", "admin"];
 
 export default function AppShell(props: AppShellProps) {
   const { children } = props;
@@ -21,7 +23,7 @@ export default function AppShell(props: AppShellProps) {
 
   return (
     <main className={lato.className}>
-      {!disableNavbar.includes(pathname) && <Navbar />}
+      {!disableNavbar.includes(pathname.split("/")[1]) && <Navbar />}
       {children}
     </main>
   );
