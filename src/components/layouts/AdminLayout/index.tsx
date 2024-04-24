@@ -16,6 +16,11 @@ const listSidebarItem = [
     url: "/admin/products",
     icon: "bxs-box",
   },
+  {
+    title: "Users",
+    url: "/admin/users",
+    icon: "bxs-group",
+  },
 ];
 
 export default function AdminLayout(props: Proptypes) {
@@ -23,7 +28,7 @@ export default function AdminLayout(props: Proptypes) {
   return (
     <div className={styles.admin}>
       <Sidebar lists={listSidebarItem}></Sidebar>
-      {children}
+      <div className={styles.admin__main}>{children}</div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ export default function DashboardAdminView() {
   return (
     <AdminLayout>
       <div>
-        <div>AdminPage</div>
+        <div>Dasboard Page</div>
       </div>
     </AdminLayout>
   );
