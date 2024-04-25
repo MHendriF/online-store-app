@@ -1,5 +1,5 @@
 import UsersAdminView from "@/components/views/admin/Users";
-import userServices from "@/services/user";
+import userServices from "@/services";
 import { useEffect, useState } from "react";
 
 export default function AdminUserPage() {

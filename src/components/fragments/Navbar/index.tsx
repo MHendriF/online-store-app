@@ -6,7 +6,7 @@ import Script from "next/script";
 export default function Navbar() {
   const { data }: any = useSession();
   return (
-    <div className={styles.navbar}>
+    <nav className={styles.navbar}>
       <div className="big" id="title"></div>
       <Script id="script-title" strategy="lazyOnload">
         {`document.getElementById('title').innerHTML = 'Navbar'`}
@@ -32,6 +32,6 @@ export default function Navbar() {
           </button>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
