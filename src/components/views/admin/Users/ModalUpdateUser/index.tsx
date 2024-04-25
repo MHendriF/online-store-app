@@ -45,7 +45,6 @@ export default function ModalUpdateUser(props: any) {
       setUsersData(data.data);
     } else {
       setIsLoading(false);
-      setError(result.status === 400 ? "Email already exists" : "");
     }
   };
 

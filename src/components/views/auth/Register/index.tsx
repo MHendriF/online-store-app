@@ -31,7 +31,7 @@ export default function RegisterView() {
     };
 
     const result = await authServices.registerAccount(data);
-    console.log(result);
+    //console.log(result);
 
     if (result.status === 200) {
       form.reset();

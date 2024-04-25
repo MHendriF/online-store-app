@@ -24,6 +24,16 @@ const userServices = {
         Authorization: `Bearer ${accessToken}`,
       },
     }),
+  updateProfile: (id: string, data: any, accessToken: string) =>
+    instance.put(
+      `/api/user/profile/${id}`,
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ),
 };
 
 export default userServices;

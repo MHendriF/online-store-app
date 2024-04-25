@@ -19,7 +19,7 @@ export default async function handler(
     const { data } = req.body;
     const { user }: any = req.query;
     const token = req.headers.authorization?.split(" ")[1] || "";
-    console.log("user: ", user);
+    //console.log("user: ", user);
 
     jwt.verify(
       token,
