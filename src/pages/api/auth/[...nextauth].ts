@@ -46,6 +46,7 @@ const authOptions: NextAuthOptions = {
         token.fullname = user.fullname;
         token.phone = user.phone;
         token.role = user.role;
+        token.id = user.id;
       }
       if (account?.provider === "google") {
         const data = {
@@ -56,12 +57,14 @@ const authOptions: NextAuthOptions = {
         };
 
         await signInWithGoogle(data, (result: any) => {
+          console.log(result);
           if (result.status) {
             token.email = result.data.email;
             token.fullname = result.data.fullname;
             token.type = result.data.type;
             token.image = result.data.image;
             token.role = result.data.token;
+            token.id = result.data.id;
           }
         });
       }
@@ -82,6 +85,9 @@ const authOptions: NextAuthOptions = {
       }
       if ("role" in token) {
         session.user.role = token.role;
+      }
+      if ("id" in token) {
+        session.user.id = token.id;
       }
 
       const accessToken = jwt.sign(token, process.env.NEXTAUTH_SECRET || "", {

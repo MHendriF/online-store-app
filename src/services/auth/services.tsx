@@ -44,6 +44,7 @@ export async function signUp(
 
 export async function signInWithGoogle(
   userData: {
+    id?: string;
     email: string;
     role?: string;
     password?: string;
@@ -56,8 +57,8 @@ export async function signInWithGoogle(
   if (user.length > 0) {
     userData.role = user[0].role;
     userData.updated_at = new Date();
-    await updateData("users", user[0].id, userData, (result: boolean) => {
-      if (result) {
+    await updateData("users", user[0].id, userData, (status: boolean) => {
+      if (status) {
         callback({
           status: true,
           message: "Sign in with google success",
@@ -72,8 +73,11 @@ export async function signInWithGoogle(
     userData.password = "";
     userData.created_at = new Date();
     userData.updated_at = new Date();
-    await addData("users", userData, (result: boolean) => {
-      if (result) {
+    await addData("users", userData, (status: boolean, res: any) => {
+      console.log(res);
+      console.log(status);
+      userData.id = res.path.replace("users/", "");
+      if (status) {
         callback({
           status: true,
           message: "Sign in with google success",

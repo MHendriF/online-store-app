@@ -15,7 +15,7 @@ const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
 });
 
-const disableNavbar = ["auth", "404", "admin"];
+const disableNavbar = ["auth", "404", "admin", "member"];
 
 export default function AppShell(props: AppShellProps) {
   const { children } = props;
