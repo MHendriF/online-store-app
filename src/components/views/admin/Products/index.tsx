@@ -7,12 +7,12 @@ import { Product } from "@/types/product.type";
 import Image from "next/image";
 import { convertToRupiah } from "@/utils/currency";
 
-type Proptypes = {
+type PropTypes = {
   products: Product[];
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 
-export default function ProductsAdminView(props: Proptypes) {
+export default function ProductsAdminView(props: PropTypes) {
   const { products, setToaster } = props;
   const session: any = useSession();
   const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
