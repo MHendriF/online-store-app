@@ -12,6 +12,7 @@ export default function ProfileMemberView({
   profile,
   setProfile,
   session,
+  setToaster,
 }: any) {
   const [changePicture, setChangePicture] = useState<any>({});
   const [isLoading, setIsLoading] = useState("");
@@ -43,6 +44,10 @@ export default function ProfileMemberView({
               setProfile({ ...profile, image: newPictureURL });
               setChangePicture({});
               e.target[0].value = "";
+              setToaster({
+                variant: "success",
+                message: "Success Change Avatar",
+              });
             } else {
               setIsLoading("");
             }
@@ -50,6 +55,10 @@ export default function ProfileMemberView({
             console.log("File Kegedean!!!!!!");
             setIsLoading("");
             setChangePicture({});
+            setToaster({
+              variant: "danger",
+              message: "Failed Change Picture",
+            });
           }
         }
       );
@@ -77,6 +86,7 @@ export default function ProfileMemberView({
       setIsLoading("");
       setProfile({ ...profile, fullname: data.fullname, phone: data.phone });
       form.reset();
+      setToaster({ variant: "success", message: "Success Update Profile" });
     } else {
       setIsLoading("");
     }
@@ -103,8 +113,11 @@ export default function ProfileMemberView({
 
     if (result.status === 200) {
       setIsLoading("");
+      form.reset();
+      setToaster({ variant: "success", message: "Success Change Password" });
     } else {
       setIsLoading("");
+      setToaster({ variant: "danger", message: "Failed Change Password" });
     }
   };
 

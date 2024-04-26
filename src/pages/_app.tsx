@@ -1,13 +1,27 @@
 import AppShell from "@/components/layouts/AppShell";
+import Toaster from "@/components/ui/Toaster";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const [toaster, setToaster] = useState<any>({
+    // variant: "warning",
+    // message: "Input is empty",
+  });
+
+  useEffect(() => {
+    if (Object.keys(toaster).length > 0) {
+      setTimeout(() => {
+        setToaster({});
+      }, 3000);
+    }
+  });
   return (
     <SessionProvider session={session}>
       <Head>
@@ -17,7 +31,14 @@ export default function App({
         />
       </Head>
       <AppShell>
-        <Component {...pageProps} />
+        <Component {...pageProps} setToaster={setToaster} toaster={toaster} />
+        {Object.keys(toaster).length > 0 && (
+          <Toaster
+            variant={toaster.variant}
+            message={toaster.message}
+            setToaster={setToaster}
+          />
+        )}
       </AppShell>
     </SessionProvider>
   );
