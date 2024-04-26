@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
-import userServices from "@/services";
+import userServices from "@/services/user";
 import { User } from "@/types/user.type";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 

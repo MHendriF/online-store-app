@@ -25,7 +25,7 @@ export default async function handler(
       token,
       process.env.NEXTAUTH_SECRET || "",
       async (err: any, decoded: any) => {
-        console.log("decoded: ", decoded);
+        //console.log("decoded: ", decoded);
         if (decoded && decoded.role === "admin") {
           await updateData("users", user[1], data, (result: boolean) => {
             if (result) {
@@ -54,7 +54,6 @@ export default async function handler(
       token,
       process.env.NEXTAUTH_SECRET || "",
       async (err: any, decoded: any) => {
-        console.log("decoded: ", decoded);
         if (decoded && decoded.role === "admin") {
           await deleteData("users", user[1], (result: boolean) => {
             if (result) {
@@ -68,7 +67,6 @@ export default async function handler(
             }
           });
         } else {
-          console.log(err);
           res
             .status(403)
             .json({ status: false, statusCode: 403, message: "Access denied" });

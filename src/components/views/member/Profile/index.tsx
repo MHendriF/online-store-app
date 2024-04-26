@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { uploadFile } from "@/lib/firebase/service";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
-import userServices from "@/services";
+import userServices from "@/services/user";
 import { User } from "@/types/user.type";
 
 type PropTypes = {

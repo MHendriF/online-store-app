@@ -48,6 +48,7 @@ const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.id = user.id;
         token.image = user.image;
+        token.type = user.type;
       }
       if (account?.provider === "google") {
         const data = {
@@ -59,6 +60,7 @@ const authOptions: NextAuthOptions = {
         console.log("user: ", user);
 
         await signInWithGoogle(data, (result: any) => {
+          console.log("data: ", data);
           console.log("signInWithGoogle: ", result);
           if (result.status) {
             token.email = result.data.email;
@@ -73,6 +75,8 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }: any) {
+      //console.log("token: ", token);
+      //console.log("session: ", session);
       if ("email" in token) {
         session.user.email = token.email;
       }
@@ -88,6 +92,9 @@ const authOptions: NextAuthOptions = {
       if ("role" in token) {
         session.user.role = token.role;
       }
+      if ("type" in token) {
+        session.user.type = token.type;
+      }
       if ("id" in token) {
         session.user.id = token.id;
       }
@@ -96,7 +103,7 @@ const authOptions: NextAuthOptions = {
         algorithm: "HS256",
       });
       session.accessToken = accessToken;
-      console.log("session: ", session);
+      //console.log("session: ", session);
       return session;
     },
   },

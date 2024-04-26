@@ -55,7 +55,6 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     const { data } = req.body;
-    const { user }: any = req.query;
     const token = req.headers.authorization?.split(" ")[1] || "";
     //console.log("user: ", user);
 
@@ -67,12 +66,10 @@ export default async function handler(
 
         if (decoded) {
           if (data.password) {
-            console.log("password: ", data.password);
             const passwordConfirm = await compare(
               data.oldPassword,
               data.encryptedPassword
             );
-            console.log(passwordConfirm);
             if (!passwordConfirm) {
               res.status(400).json({
                 status: false,
@@ -86,7 +83,6 @@ export default async function handler(
             data.password = await hash(data.password, 10);
           }
 
-          console.log("decoded: ", decoded);
           await updateData("users", decoded.id, data, (result: boolean) => {
             if (result) {
               res.status(200).json({
@@ -105,7 +101,6 @@ export default async function handler(
             }
           });
         } else {
-          console.log(err);
           res.status(403).json({
             status: false,
             statusCode: 403,

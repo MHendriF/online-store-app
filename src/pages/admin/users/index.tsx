@@ -1,8 +1,12 @@
 import UsersAdminView from "@/components/views/admin/Users";
-import userServices from "@/services";
-import { useEffect, useState } from "react";
+import userServices from "@/services/user";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-export default function AdminUserPage({ setToaster }: any) {
+type PropTypes = {
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
+
+export default function AdminUserPage({ setToaster }: PropTypes) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const getAllUsers = async () => {
