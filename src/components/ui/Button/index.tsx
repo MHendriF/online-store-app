@@ -6,15 +6,24 @@ type Proptypes = {
   children: React.ReactNode;
   variant?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 export default function Button(props: Proptypes) {
-  const { type, onClick, children, variant = "primary", className } = props;
+  const {
+    type,
+    onClick,
+    children,
+    variant = "primary",
+    className,
+    disabled,
+  } = props;
   return (
     <button
       type={type}
       onClick={onClick}
       className={`${styles.button} ${styles[variant]} ${className}`}
+      disabled={disabled}
     >
       {children}
     </button>

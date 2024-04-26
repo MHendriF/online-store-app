@@ -2,18 +2,37 @@ import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import userServices from "@/services";
 import styles from "./ModalDeleteUser.module.scss";
-import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { User } from "@/types/user.type";
 
-export default function ModalDeleteUser(props: any) {
-  const { deletedUser, setDeletedUser, setUsersData, setToaster } = props;
-  const session: any = useSession();
+type PropTypes = {
+  deletedUser: User | any;
+  setDeletedUser: Dispatch<SetStateAction<{}>>;
+  setUsersData: Dispatch<SetStateAction<User[]>>;
+  setToaster: Dispatch<SetStateAction<{}>>;
+  session: any;
+};
+
+export default function ModalDeleteUser(props: PropTypes) {
+  const { deletedUser, setDeletedUser, setUsersData, setToaster, session } =
+    props;
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-    userServices.deleteUser(deletedUser.id, session.data?.accessToken);
-    setDeletedUser({});
-    const { data } = await userServices.getllUsers();
-    setUsersData(data.data);
-    setToaster({ variant: "success", message: "Success Delete User" });
+    const result = await userServices.deleteUser(
+      deletedUser.id,
+      session.data?.accessToken
+    );
+    if (result.status === 200) {
+      setIsLoading(false);
+      setDeletedUser({});
+      const { data } = await userServices.getllUsers();
+      setUsersData(data.data);
+      setToaster({ variant: "success", message: "Success Delete User" });
+    } else {
+      setIsLoading(false);
+      setToaster({ variant: "danger", message: "Failed Delete User" });
+    }
   };
 
   return (
@@ -22,7 +41,7 @@ export default function ModalDeleteUser(props: any) {
         Are you sure you want to delete this user?
       </h1>
       <Button type="button" onClick={() => handleDelete()}>
-        Delete
+        {isLoading ? "Deleting..." : "Yes, delete"}
       </Button>
     </Modal>
   );

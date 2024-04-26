@@ -1,9 +1,14 @@
 import LoginView from "@/components/views/auth/Login";
+import { Dispatch, SetStateAction } from "react";
 
-export default function LoginPage() {
+type PropTypes = {
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
+
+export default function LoginPage({ setToaster }: PropTypes) {
   return (
     <>
-      <LoginView />
+      <LoginView setToaster={setToaster} />
     </>
   );
 }

@@ -1,26 +1,30 @@
-import Link from "next/link";
 import styles from "./Login.module.scss";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
-export default function LoginView() {
+type PropTypes = {
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
+
+export default function LoginView({ setToaster }: PropTypes) {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const { push, query } = useRouter();
   const callbackUrl: any = query.callbackUrl || "/";
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     const form = e.target as HTMLFormElement;
     if (form.email.value === "") {
-      setError("Email is empty");
+      setToaster({
+        variant: "warning",
+        message: "Email cannot be empty",
+      });
       setIsLoading(false);
       return;
     }
@@ -36,22 +40,32 @@ export default function LoginView() {
         form.reset();
         setIsLoading(false);
         push(callbackUrl);
+        setToaster({
+          variant: "success",
+          message: "Login success",
+        });
       } else {
         setIsLoading(false);
-        setError("Email or password is  incorrect");
+        setToaster({
+          variant: "danger",
+          message: "Email or password is  incorrect",
+        });
       }
     } catch (error: any) {
       setIsLoading(false);
-      setError("Email or password is  incorrect");
+      setToaster({
+        variant: "danger",
+        message: "Login failed, please call support",
+      });
     }
   };
 
   return (
     <AuthLayout
       title="Login"
-      error={error}
       link="/auth/register"
       linkText="Don't an account? Sign up "
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input

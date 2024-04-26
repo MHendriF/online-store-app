@@ -1,25 +1,29 @@
-import Link from "next/link";
 import styles from "./Register.module.scss";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { useRouter } from "next/router";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import authServices from "@/services/auth";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
-export default function RegisterView() {
+type PropTypes = {
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
+
+export default function RegisterView({ setToaster }: PropTypes) {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const { push } = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     const form = e.target as HTMLFormElement;
     if (form.email.value === "") {
-      setError("Email is empty");
+      setToaster({
+        variant: "warning",
+        message: "Email cannot be empty",
+      });
       setIsLoading(false);
       return;
     }
@@ -30,25 +34,39 @@ export default function RegisterView() {
       password: form.password.value,
     };
 
-    const result = await authServices.registerAccount(data);
-    //console.log(result);
-
-    if (result.status === 200) {
-      form.reset();
+    try {
+      const result = await authServices.registerAccount(data);
+      //console.log(result);
+      if (result.status === 200) {
+        form.reset();
+        setIsLoading(false);
+        push("/auth/login");
+        setToaster({
+          variant: "success",
+          message: "Register success",
+        });
+      } else {
+        setIsLoading(false);
+        setToaster({
+          variant: "danger",
+          message: "Register failed, please call support",
+        });
+      }
+    } catch (error) {
       setIsLoading(false);
-      push("/auth/login");
-    } else {
-      setIsLoading(false);
-      setError(result.status === 400 ? "Email already exists" : "");
+      setToaster({
+        variant: "danger",
+        message: "Register failed, email is already exists",
+      });
     }
   };
 
   return (
     <AuthLayout
       title="Register"
-      error={error}
       link="/auth/login"
       linkText="Already have an account? Sign in"
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input

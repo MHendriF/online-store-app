@@ -5,24 +5,33 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { uploadFile } from "@/lib/firebase/service";
-import { useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import userServices from "@/services";
+import { User } from "@/types/user.type";
+
+type PropTypes = {
+  profile: User | any;
+  setProfile: Dispatch<SetStateAction<{}>>;
+  session: any;
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
 
 export default function ProfileMemberView({
   profile,
   setProfile,
   session,
   setToaster,
-}: any) {
-  const [changePicture, setChangePicture] = useState<any>({});
+}: PropTypes) {
+  const [changePicture, setChangePicture] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
   console.log(profile);
 
-  const handleChangeProfilePicture = async (e: any) => {
+  const handleChangeProfilePicture = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("picture");
 
-    const file = e.target[0]?.files[0];
+    const form = e.target as HTMLFormElement;
+    const file = form.image.files[0];
     if (file) {
       uploadFile(
         profile.id,
@@ -33,7 +42,6 @@ export default function ProfileMemberView({
               image: newPictureURL,
             };
             const result = await userServices.updateProfile(
-              profile.id,
               data,
               session.data?.accessToken
             );
@@ -43,7 +51,7 @@ export default function ProfileMemberView({
               setIsLoading("");
               setProfile({ ...profile, image: newPictureURL });
               setChangePicture({});
-              e.target[0].value = "";
+              form.reset();
               setToaster({
                 variant: "success",
                 message: "Success Change Avatar",
@@ -65,7 +73,7 @@ export default function ProfileMemberView({
     }
   };
 
-  const handleChangeProfile = async (e: any) => {
+  const handleChangeProfile = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("profile");
 
@@ -76,7 +84,6 @@ export default function ProfileMemberView({
     };
 
     const result = await userServices.updateProfile(
-      profile.id,
       data,
       session.data?.accessToken
     );
@@ -92,7 +99,7 @@ export default function ProfileMemberView({
     }
   };
 
-  const handleUpdatePassword = async (e: any) => {
+  const handleUpdatePassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("password");
 
@@ -104,18 +111,18 @@ export default function ProfileMemberView({
     };
     console.log(data);
 
-    const result = await userServices.updateProfile(
-      profile.id,
-      data,
-      session.data?.accessToken
-    );
-    console.log("result: ", result);
+    try {
+      const result = await userServices.updateProfile(
+        data,
+        session.data?.accessToken
+      );
 
-    if (result.status === 200) {
-      setIsLoading("");
-      form.reset();
-      setToaster({ variant: "success", message: "Success Change Password" });
-    } else {
+      if (result.status === 200) {
+        setIsLoading("");
+        form.reset();
+        setToaster({ variant: "success", message: "Success Change Password" });
+      }
+    } catch (error) {
       setIsLoading("");
       setToaster({ variant: "danger", message: "Failed Change Password" });
     }
@@ -188,6 +195,7 @@ export default function ProfileMemberView({
                 type="text"
                 name="fullname"
                 defaultValue={profile?.fullname}
+                placeholder="Input your fullname"
               />
               <Input
                 label="Email"
@@ -201,6 +209,7 @@ export default function ProfileMemberView({
                 type="number"
                 name="phone"
                 defaultValue={profile?.phone}
+                placeholder="Input your phone number"
               />
               <Input
                 label="role"
@@ -217,9 +226,24 @@ export default function ProfileMemberView({
           <div className={styles.profile__main__row__password}>
             <h2>Change Password</h2>
             <form onSubmit={handleUpdatePassword}>
-              <Input label="Old Password" type="password" name="old-password" />
-              <Input label="New Password" type="password" name="new-password" />
-              <Button type="submit">
+              <Input
+                label="Old Password"
+                type="password"
+                name="old-password"
+                placeholder="Enter your current password"
+                disabled={profile.type === "google"}
+              />
+              <Input
+                label="New Password"
+                type="password"
+                name="new-password"
+                placeholder="Enter your new password"
+                disabled={profile.type === "google"}
+              />
+              <Button
+                type="submit"
+                disabled={isLoading === "password" || profile.type === "google"}
+              >
                 {isLoading === "password" ? "Uploading..." : "Update Password"}
               </Button>
             </form>

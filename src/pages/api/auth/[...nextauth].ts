@@ -56,15 +56,16 @@ const authOptions: NextAuthOptions = {
           image: user.image,
           type: "google",
         };
+        console.log("user: ", user);
 
         await signInWithGoogle(data, (result: any) => {
-          console.log(result);
+          console.log("signInWithGoogle: ", result);
           if (result.status) {
             token.email = result.data.email;
             token.fullname = result.data.fullname;
             token.type = result.data.type;
             token.image = result.data.image;
-            token.role = result.data.token;
+            token.role = result.data.role;
             token.id = result.data.id;
           }
         });
@@ -95,7 +96,7 @@ const authOptions: NextAuthOptions = {
         algorithm: "HS256",
       });
       session.accessToken = accessToken;
-
+      console.log("session: ", session);
       return session;
     },
   },

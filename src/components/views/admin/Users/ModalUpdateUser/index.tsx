@@ -3,26 +3,27 @@ import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
 import userServices from "@/services";
-import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { User } from "@/types/user.type";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-export default function ModalUpdateUser(props: any) {
-  const { updatedUser, setUpdatedUser, setUsersData, setToaster } = props;
-  const session: any = useSession();
+type PropTypes = {
+  updatedUser: User | any;
+  setUpdatedUser: Dispatch<SetStateAction<{}>>;
+  setUsersData: Dispatch<SetStateAction<User[]>>;
+  setToaster: Dispatch<SetStateAction<{}>>;
+  session: any;
+};
+
+export default function ModalUpdateUser(props: PropTypes) {
+  const { updatedUser, setUpdatedUser, setUsersData, setToaster, session } =
+    props;
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     const form: any = e.target as HTMLFormElement;
-    if (form.email.value === "") {
-      setError("Email is empty");
-      setIsLoading(false);
-      return;
-    }
     const data: any = {
       email: form.email.value,
       fullname: form.fullname.value,
@@ -93,7 +94,7 @@ export default function ModalUpdateUser(props: any) {
             },
           ]}
         ></Select>
-        <Button type="submit">Update</Button>
+        <Button type="submit">{isLoading ? "Updating..." : "Update"}</Button>
       </form>
     </Modal>
   );

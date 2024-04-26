@@ -13,13 +13,16 @@ export default function withAuth(
   middleware: NextMiddleware,
   requireAuth: string[] = []
 ) {
-  return async (req: NextRequest, ev: NextFetchEvent) => {
+  return async (req: NextRequest, next: NextFetchEvent) => {
     const pathname = req.nextUrl.pathname.split("/")[1];
     if (requireAuth.includes(pathname)) {
       const token = await getToken({
         req,
         secret: process.env.NEXTAUTH_SECRET,
       });
+      console.log("NextRequest: ", req);
+      console.log("NEXTAUTH_SECRET: ", process.env.NEXTAUTH_SECRET);
+      console.log("token: ", token);
       if (!token && !authPage.includes(pathname)) {
         const url = new URL("/auth/login", req.url);
         url.searchParams.set("callbackUrl", encodeURI(req.url));
@@ -34,6 +37,6 @@ export default function withAuth(
         }
       }
     }
-    return middleware(req, ev);
+    return middleware(req, next);
   };
 }
