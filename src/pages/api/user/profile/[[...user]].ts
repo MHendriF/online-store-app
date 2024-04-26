@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { retrieveDataById, updateData } from "@/lib/firebase/service";
+import { compare, hash } from "bcrypt";
 
 type Data = {
   status: boolean;
@@ -55,14 +56,36 @@ export default async function handler(
     const { data } = req.body;
     const { user }: any = req.query;
     const token = req.headers.authorization?.split(" ")[1] || "";
-    console.log("user: ", user);
+    //console.log("user: ", user);
 
     jwt.verify(
       token,
       process.env.NEXTAUTH_SECRET || "",
       async (err: any, decoded: any) => {
-        console.log("decoded: ", decoded);
+        //console.log("data: ", data);
+
         if (decoded) {
+          if (data.password) {
+            console.log("password: ", data.password);
+            const passwordConfirm = await compare(
+              data.oldPassword,
+              data.encryptedPassword
+            );
+            console.log(passwordConfirm);
+            if (!passwordConfirm) {
+              console.log("Old password is wrong");
+              res.status(400).json({
+                status: false,
+                statusCode: 400,
+                message: "Old password is wrong",
+                data: {},
+              });
+            }
+            delete data.oldPassword;
+            delete data.encryptedPassword;
+            data.password = await hash(data.password, 10);
+          }
+
           await updateData("users", user[0], data, (result: boolean) => {
             if (result) {
               res.status(200).json({

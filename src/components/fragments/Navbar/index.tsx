@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./Navbar.module.scss";
 import Image from "next/image";
 import Script from "next/script";
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
   const { data }: any = useSession();
