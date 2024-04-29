@@ -8,16 +8,22 @@ const productServices = {
         Authorization: `Bearer ${token}`,
       },
     }),
-  updateProduct: (id: string, data: any, token: string) =>
+  updateProduct: (id: string, data: any, accessToken: string) =>
     instance.put(
       `/api/product/${id}`,
       { data },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     ),
+  deleteProduct: (id: string, accessToken: string) =>
+    instance.delete(`/api/product/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }),
 };
 
 export default productServices;

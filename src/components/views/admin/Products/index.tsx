@@ -8,6 +8,7 @@ import Image from "next/image";
 import { convertToRupiah } from "@/utils/currency";
 import ModalAddProduct from "./ModalAddProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
+import ModalDeleteProduct from "./ModalDeleteProduct";
 
 type PropTypes = {
   products: Product[];
@@ -17,10 +18,10 @@ type PropTypes = {
 export default function ProductsAdminView(props: PropTypes) {
   const { products, setToaster } = props;
   const session: any = useSession();
+  const [modalAddProduct, setModalAddProduct] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
   const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
   const [productsData, setProductsData] = useState<Product[]>([]);
-  const [modalAddProduct, setModalAddProduct] = useState(false);
 
   useEffect(() => {
     setProductsData(products);
@@ -123,6 +124,15 @@ export default function ProductsAdminView(props: PropTypes) {
         <ModalUpdateProduct
           updatedProduct={updatedProduct}
           setUpdatedProduct={setUpdatedProduct}
+          setProductsData={setProductsData}
+          setToaster={setToaster}
+          session={session}
+        />
+      )}
+      {Object.keys(deletedProduct).length && (
+        <ModalDeleteProduct
+          deletedProduct={deletedProduct}
+          setDeletedProduct={setDeletedProduct}
           setProductsData={setProductsData}
           setToaster={setToaster}
           session={session}
