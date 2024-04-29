@@ -56,10 +56,10 @@ export default function ProductsAdminView(props: PropTypes) {
               </tr>
             </thead>
             <tbody>
-              {productsData.map((product: Product, index: number) => (
+              {productsData.map((product: Product, i: number) => (
                 <>
                   <tr key={product.id}>
-                    <td rowSpan={product.stock.length}>{index + 1}</td>
+                    <td rowSpan={product.stock.length}>{i + 1}</td>
                     <td rowSpan={product.stock.length}>
                       <Image
                         src={product.image}

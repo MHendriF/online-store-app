@@ -7,6 +7,7 @@ import styles from "./ModalAddProduct.module.scss";
 import { Product } from "@/types/product.type";
 import productServices from "@/services/product";
 import InputFile from "@/components/ui/InputFile";
+import { uploadFile } from "@/lib/firebase/service";
 
 type PropTypes = {
   setModalAddProduct: Dispatch<SetStateAction<boolean>>;
@@ -23,8 +24,60 @@ export default function ModalAddProduct(props: PropTypes) {
 
   const handleStock = (e: any, i: number, type: string) => {
     const newStockCount: any = [...stockCount];
-    newStockCount[i].type = e.target.value;
+    newStockCount[i][type] = e.target.value;
     setStockCount(newStockCount);
+  };
+
+  const uploadImage = (id: string, form: any) => {
+    const file = form.image.files[0];
+    const newName = "main." + file.name.split(".")[1];
+
+    if (file) {
+      uploadFile(
+        id,
+        file,
+        newName,
+        "products",
+        async (status: boolean, newImageURL: string) => {
+          if (status) {
+            const data = {
+              image: newImageURL,
+            };
+            const result = await productServices.updateProduct(
+              id,
+              data,
+              session.data?.accessToken
+            );
+            console.log(result);
+
+            if (result.status === 200) {
+              setIsLoading(false);
+              setUploadedImage(null);
+              form.reset();
+              setModalAddProduct(false);
+              const { data } = await productServices.getllProducts();
+              setProductsData(data.data);
+              setToaster({
+                variant: "success",
+                message: "Success Add Product",
+              });
+            } else {
+              setIsLoading(false);
+              setToaster({
+                variant: "danger",
+                message: "Failed Add Product",
+              });
+            }
+          } else {
+            setIsLoading(false);
+            setToaster({
+              variant: "danger",
+              message: "Failed Add Product",
+            });
+          }
+        }
+      );
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -33,31 +86,34 @@ export default function ModalAddProduct(props: PropTypes) {
 
     const form: any = e.target as HTMLFormElement;
     const data: any = {
-      email: form.email.value,
-      fullname: form.fullname.value,
-      phone: form.phone.value,
-      role: form.role.value,
+      name: form.name.value,
+      category: form.category.value,
+      price: form.price.value,
+      status: form.status.value,
+      stock: stockCount,
+      image: "",
     };
 
-    const result = await productServices.getllProducts();
+    const result = await productServices.addProduct(
+      data,
+      session.data?.accessToken
+    );
     console.log(result);
 
     if (result.status === 200) {
-      form.reset();
-      setIsLoading(false);
-      console.log("close");
-      const { data } = await productServices.getllProducts();
-      setProductsData(data.data);
-      setToaster({ variant: "success", message: "Success Update Product" });
+      uploadImage(result.data.data.id, form);
+      //form.reset();
+      //setIsLoading(false);
+      //setToaster({ variant: "success", message: "Success Update Product" });
     } else {
-      setIsLoading(false);
-      setToaster({ variant: "danger", message: "Failed Update Product" });
+      //setIsLoading(false);
+      //setToaster({ variant: "danger", message: "Failed Update Product" });
     }
   };
 
   return (
-    <Modal onClose={() => console.log("close")}>
-      <h1>Update User</h1>
+    <Modal onClose={() => setModalAddProduct(false)}>
+      <h1>Add Product</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           label="Name"
@@ -65,7 +121,12 @@ export default function ModalAddProduct(props: PropTypes) {
           type="text"
           placeholder="Insert product name"
         />
-        <Input label="Price" name="price" type="number" />
+        <Input
+          label="Price"
+          name="price"
+          type="number"
+          placeholder="Insert product price"
+        />
         <Select
           label="Category"
           name="category"
@@ -129,7 +190,11 @@ export default function ModalAddProduct(props: PropTypes) {
           Add Stock
         </Button>
         <label htmlFor="image">Image</label>
-        <InputFile name="image" />
+        <InputFile
+          name="image"
+          uploadedImage={uploadedImage}
+          setUploadedImage={setUploadedImage}
+        />
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Add Product"}
         </Button>

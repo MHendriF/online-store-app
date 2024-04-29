@@ -6,6 +6,12 @@
     &__item {
       width: 50%;
       margin-bottom: -20px;
+      :nth-child(1) {
+        margin-top: 5px;
+      }
+      label {
+        font-size: 14px;
+      }
     }
     &__button {
       padding: 10px 15px;
