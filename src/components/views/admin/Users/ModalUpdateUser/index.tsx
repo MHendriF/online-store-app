@@ -93,7 +93,7 @@ export default function ModalUpdateUser(props: PropTypes) {
               value: "member",
             },
           ]}
-        ></Select>
+        />
         <Button type="submit">{isLoading ? "Updating..." : "Update"}</Button>
       </form>
     </Modal>

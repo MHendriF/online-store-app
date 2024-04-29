@@ -1,11 +1,20 @@
 .products {
+  &__add {
+    margin-top: 40px;
+    padding: 15px 20px;
+    i {
+      font-size: 24px;
+      margin-right: 5px;
+      font-weight: bold;
+    }
+  }
   &__table {
     width: 100%;
     // border-spacing: 0;
     // border-collapse: collapse;
     border: 1px solid #ddd;
     border-radius: 10px;
-    margin-top: 40px;
+    margin-top: 20px;
     th,
     td {
       text-align: center;

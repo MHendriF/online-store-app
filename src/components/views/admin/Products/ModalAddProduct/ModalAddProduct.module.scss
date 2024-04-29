@@ -1,0 +1,17 @@
+.form {
+  &__stock {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    &__item {
+      width: 50%;
+      margin-bottom: -20px;
+    }
+    &__button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 20px;
+      margin: 20px 0;
+    }
+  }
+}

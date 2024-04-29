@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { Product } from "@/types/product.type";
 import Image from "next/image";
 import { convertToRupiah } from "@/utils/currency";
+import ModalAddProduct from "./ModalAddProduct";
 
 type PropTypes = {
   products: Product[];
@@ -18,6 +19,7 @@ export default function ProductsAdminView(props: PropTypes) {
   const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
   const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
   const [productsData, setProductsData] = useState<Product[]>([]);
+  const [modalAddProduct, setModalAddProduct] = useState(false);
 
   useEffect(() => {
     setProductsData(products);
@@ -30,6 +32,13 @@ export default function ProductsAdminView(props: PropTypes) {
       <AdminLayout>
         <div className={styles.products}>
           <h1>Product Management</h1>
+          <Button
+            type="button"
+            className={styles.products__add}
+            onClick={() => setModalAddProduct(true)}
+          >
+            <i className="bx bx-plus">Add Product</i>
+          </Button>
           <table className={styles.products__table}>
             <thead>
               <tr>
@@ -103,6 +112,14 @@ export default function ProductsAdminView(props: PropTypes) {
           </table>
         </div>
       </AdminLayout>
+      {modalAddProduct && (
+        <ModalAddProduct
+          setModalAddProduct={setModalAddProduct}
+          setProductsData={setProductsData}
+          setToaster={setToaster}
+          session={session}
+        ></ModalAddProduct>
+      )}
     </>
   );
 }
