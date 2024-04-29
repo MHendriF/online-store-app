@@ -1,0 +1,62 @@
+.detail {
+  padding: 20vh 25vw;
+  &__main {
+    display: flex;
+    gap: 60px;
+    &__left {
+      width: 50%;
+      background-color: #8f8f8f;
+      &__image {
+        width: 100%;
+        scale: 1/1;
+        height: auto;
+      }
+    }
+    &__right {
+      &__category {
+        color: #8f8f8f;
+        margin-top: 5px;
+      }
+      &__price {
+        margin-top: 20px;
+      }
+      &__subtitle {
+        margin-top: 60px;
+        font-size: 16px;
+      }
+      &__size {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        &__item {
+          &__label {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #e6e6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+          }
+          &__input {
+            appearance: none;
+          }
+          &__input:checked + &__label {
+            border: 1px solid #000;
+          }
+          &__input:disabled + &__label {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+      }
+      &__add {
+        margin-top: 60px;
+        width: 100%;
+        padding: 20px;
+      }
+    }
+  }
+}

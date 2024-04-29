@@ -42,7 +42,7 @@ export default function ModalUpdateUser(props: PropTypes) {
       form.reset();
       setIsLoading(false);
       setUpdatedUser({});
-      const { data } = await userServices.getllUsers();
+      const { data } = await userServices.getAllUsers();
       setUsersData(data.data);
       setToaster({ variant: "success", message: "Success Update User" });
     } else {

@@ -10,7 +10,7 @@ export default function AdminUserPage({ setToaster }: PropTypes) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const getAllUsers = async () => {
-      const { data } = await userServices.getllUsers();
+      const { data } = await userServices.getAllUsers();
       setUsers(data.data);
     };
     getAllUsers();

@@ -1,7 +1,7 @@
 import instance from "@/lib/axios/instance";
 
 const userServices = {
-  getllUsers: () => instance.get("/api/user"),
+  getAllUsers: () => instance.get("/api/user"),
   updateUser: (id: string, data: any, accessToken: string) =>
     instance.put(
       `/api/user/${id}`,

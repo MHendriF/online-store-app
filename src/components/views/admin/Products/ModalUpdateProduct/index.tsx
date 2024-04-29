@@ -91,7 +91,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
       setUploadedImage(null);
       form.reset();
       setUpdatedProduct({});
-      const { data } = await productServices.getllProducts();
+      const { data } = await productServices.getAllProducts();
       setProductsData(data.data);
       setToaster({
         variant: "success",

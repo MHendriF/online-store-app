@@ -5,14 +5,13 @@ import { convertToRupiah } from "@/utils/currency";
 
 type PropTypes = {
   product: Product;
-  key: string;
 };
 
 export default function Card(props: PropTypes) {
-  const { product, key } = props;
+  const { product } = props;
 
   return (
-    <div key={key} className={styles.card}>
+    <div className={styles.card}>
       <Image
         width={200}
         height={200}

@@ -10,7 +10,7 @@ export default function AdminProductPage({ setToaster }: PropTypes) {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const getAllProducts = async () => {
-      const { data } = await productServices.getllProducts();
+      const { data } = await productServices.getAllProducts();
       setProducts(data.data);
     };
     getAllProducts();

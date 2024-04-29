@@ -26,7 +26,7 @@ export default function ModalDeleteUser(props: PropTypes) {
     if (result.status === 200) {
       setIsLoading(false);
       setDeletedUser({});
-      const { data } = await userServices.getllUsers();
+      const { data } = await userServices.getAllUsers();
       setUsersData(data.data);
       setToaster({ variant: "success", message: "Success Delete User" });
     } else {

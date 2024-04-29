@@ -46,7 +46,7 @@ export default function ModalDeleteProduct(props: PropTypes) {
         }
       );
       setDeletedProduct({});
-      const { data } = await ProductServices.getllProducts();
+      const { data } = await ProductServices.getAllProducts();
       setProductsData(data.data);
     } else {
       setIsLoading(false);
