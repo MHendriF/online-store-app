@@ -18,7 +18,7 @@ export default async function handler(
         token,
         process.env.NEXTAUTH_SECRET || "",
         async (err: any, decoded: any) => {
-          console.log("decoded: ", decoded);
+          //console.log("decoded: ", decoded);
           if (decoded && decoded.role === "admin") {
             let data = req.body;
             data.created_at = new Date();

@@ -26,16 +26,11 @@
     gap: 20px;
     margin-bottom: 20px;
     margin-top: 10px;
-    &__preview,
-    &__placeholder {
+    &__preview {
       width: 15%;
       aspect-ratio: 1/1;
       height: auto;
       border-radius: 5px;
-      background-color: #eee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 }

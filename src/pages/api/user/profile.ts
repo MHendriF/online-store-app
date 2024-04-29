@@ -21,13 +21,12 @@ export default async function handler(
         token,
         process.env.NEXTAUTH_SECRET || "",
         async (err: any, decoded: any) => {
-          console.log("decoded: ", decoded);
+          //console.log("decoded: ", decoded);
           if (decoded) {
             const profile: any = await retrieveDataById("users", decoded.id);
-            console.log("profile: ", profile);
+            //console.log("profile: ", profile);
             if (profile) {
               profile.id = decoded.id;
-              console.log("api profile: ", profile);
               res.status(200).json({
                 status: false,
                 statusCode: 200,

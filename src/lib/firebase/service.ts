@@ -62,7 +62,6 @@ export async function addData(
 ) {
   await addDoc(collection(firestore, collectionName), data)
     .then((res) => {
-      console.log("res: ", res.path);
       callback(true, res);
     })
     .catch((error) => {
@@ -97,7 +96,6 @@ export async function deleteData(
       callback(true);
     })
     .catch((error) => {
-      console.log("error: ", error);
       callback(false);
     });
 }
@@ -109,7 +107,7 @@ export async function uploadFile(
   collection: string,
   callback: Function
 ) {
-  console.log("file: ", file);
+  //console.log("file: ", file);
   if (file.size < 1048576) {
     const storageRef = ref(storage, `images/${collection}/${id}/${newName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -135,7 +133,6 @@ export async function uploadFile(
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL: any) => {
           callback(true, downloadURL);
-          console.log("File available at", downloadURL);
         });
       }
     );

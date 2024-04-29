@@ -20,9 +20,6 @@ export default function withAuth(
         req,
         secret: process.env.NEXTAUTH_SECRET,
       });
-      console.log("NextRequest: ", req);
-      console.log("NEXTAUTH_SECRET: ", process.env.NEXTAUTH_SECRET);
-      console.log("token: ", token);
       if (!token && !authPage.includes(pathname)) {
         const url = new URL("/auth/login", req.url);
         url.searchParams.set("callbackUrl", encodeURI(req.url));

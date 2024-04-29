@@ -10,10 +10,7 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  const [toaster, setToaster] = useState<any>({
-    // variant: "warning",
-    // message: "Input is empty",
-  });
+  const [toaster, setToaster] = useState<any>({});
 
   useEffect(() => {
     if (Object.keys(toaster).length > 0) {

@@ -11,7 +11,7 @@ type PropTypes = {
 export default function ProfilePage({ setToaster }: PropTypes) {
   const [profile, setProfile] = useState<User | {}>({});
   const session: any = useSession();
-  console.log("profile session: ", session);
+  //console.log("profile session: ", session);
 
   useEffect(() => {
     if (session.data?.accessToken && Object.keys(profile).length === 0) {

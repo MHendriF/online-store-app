@@ -39,7 +39,6 @@ export default async function handler(
             }
           });
         } else {
-          console.log(err);
           res
             .status(403)
             .json({ status: false, statusCode: 403, message: "Access denied" });

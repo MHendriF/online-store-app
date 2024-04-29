@@ -7,6 +7,7 @@ import { Product } from "@/types/product.type";
 import Image from "next/image";
 import { convertToRupiah } from "@/utils/currency";
 import ModalAddProduct from "./ModalAddProduct";
+import ModalUpdateProduct from "./ModalUpdateProduct";
 
 type PropTypes = {
   products: Product[];
@@ -24,8 +25,6 @@ export default function ProductsAdminView(props: PropTypes) {
   useEffect(() => {
     setProductsData(products);
   }, [products]);
-
-  console.log(products);
 
   return (
     <>
@@ -98,7 +97,7 @@ export default function ProductsAdminView(props: PropTypes) {
                     (stock: { size: string; qty: number }, index: number) => (
                       <>
                         {index > 0 && (
-                          <tr key={stock.size}>
+                          <tr key={stock.size + index}>
                             <td>{stock.size}</td>
                             <td>{stock.qty}</td>
                           </tr>
@@ -118,7 +117,16 @@ export default function ProductsAdminView(props: PropTypes) {
           setProductsData={setProductsData}
           setToaster={setToaster}
           session={session}
-        ></ModalAddProduct>
+        />
+      )}
+      {Object.keys(updatedProduct).length > 0 && (
+        <ModalUpdateProduct
+          updatedProduct={updatedProduct}
+          setUpdatedProduct={setUpdatedProduct}
+          setProductsData={setProductsData}
+          setToaster={setToaster}
+          session={session}
+        />
       )}
     </>
   );
