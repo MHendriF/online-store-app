@@ -8,13 +8,22 @@ type Proptypes = {
   defaultValue?: string | number;
   disabled?: boolean;
   onChange?: (e: any) => void;
+  className?: string;
 };
 
 export default function Input(props: Proptypes) {
-  const { label, name, type, placeholder, defaultValue, disabled, onChange } =
-    props;
+  const {
+    label,
+    name,
+    type,
+    placeholder,
+    defaultValue,
+    disabled,
+    onChange,
+    className,
+  } = props;
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${className}`}>
       {label && <label htmlFor={label}>{label}</label>}
       <input
         name={name}
