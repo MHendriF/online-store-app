@@ -24,7 +24,11 @@ export default function Input(props: Proptypes) {
   } = props;
   return (
     <div className={`${styles.container} ${className}`}>
-      {label && <label htmlFor={label}>{label}</label>}
+      {label && (
+        <label htmlFor={label} className={styles.container__label}>
+          {label}
+        </label>
+      )}
       <input
         name={name}
         id={name}

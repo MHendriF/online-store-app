@@ -61,12 +61,22 @@
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         padding: 40px;
         border-radius: 8px;
+        &__form {
+          &__input {
+            margin: 20px 0;
+          }
+        }
       }
       &__password {
         width: 25%;
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         padding: 40px;
         border-radius: 8px;
+        &__form {
+          &__input {
+            margin: 20px 0;
+          }
+        }
       }
     }
   }

@@ -73,12 +73,14 @@ export default function LoginView({ setToaster }: PropTypes) {
           name="email"
           type="email"
           placeholder="example@mail.com"
+          className={styles.login__input}
         />
         <Input
           label="Password"
           name="password"
           type="password"
           placeholder="*****"
+          className={styles.login__input}
         />
         <Button
           type="submit"

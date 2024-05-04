@@ -71,12 +71,15 @@ export default function ModalUpdateProduct(props: PropTypes) {
     form: any,
     newImageURL: string = updatedProduct.image
   ) => {
+    const stock = stockCount.map((item: { size: string; qty: string }) => {
+      return { size: item.size, qty: parseInt(item.qty) };
+    });
     const data = {
       name: form.name.value,
       category: form.category.value,
-      price: form.price.value,
+      price: parseInt(form.price.value),
       status: form.status.value,
-      stock: stockCount,
+      stock: stock,
       image: newImageURL,
     };
     const result = await productServices.updateProduct(
@@ -116,6 +119,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
           type="text"
           placeholder="Insert product name"
           defaultValue={updatedProduct.name}
+          className={styles.form__input}
         />
         <Input
           label="Price"
@@ -123,6 +127,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
           type="number"
           placeholder="Insert product price"
           defaultValue={updatedProduct.price}
+          className={styles.form__input}
         />
         <Select
           label="Category"
@@ -138,6 +143,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
             },
           ]}
           defaultValue={updatedProduct.category}
+          className={styles.form__input}
         />
         <Select
           label="Status"
@@ -153,6 +159,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
             },
           ]}
           defaultValue={updatedProduct.status}
+          className={styles.form__input}
         />
         <label htmlFor="image">Image</label>
         <div className={styles.form__image}>
@@ -165,7 +172,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
             alt="image"
             width={200}
             height={200}
-            className={styles.form__image_preview}
+            className={styles.form__image__preview}
           />
           <InputFile
             name="image"
@@ -186,6 +193,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
                   handleStock(e, i, "size");
                 }}
                 defaultValue={item.size}
+                className={styles.form__input}
               />
             </div>
             <div className={styles.form__stock__item}>
@@ -198,6 +206,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
                   handleStock(e, i, "qty");
                 }}
                 defaultValue={item.qty}
+                className={styles.form__input}
               />
             </div>
           </div>

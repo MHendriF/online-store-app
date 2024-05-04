@@ -74,24 +74,28 @@ export default function RegisterView({ setToaster }: PropTypes) {
           name="email"
           type="email"
           placeholder="example@mail.com"
+          className={styles.register__input}
         />
         <Input
           label="Fullname"
           name="fullname"
           type="text"
           placeholder="John Doe"
+          className={styles.register__input}
         />
         <Input
           label="Phone"
           name="phone"
           type="text"
           placeholder="08123456789"
+          className={styles.register__input}
         />
         <Input
           label="Password"
           name="password"
           type="password"
           placeholder="*****"
+          className={styles.register__input}
         />
         <Button
           type="submit"

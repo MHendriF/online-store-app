@@ -193,13 +193,17 @@ export default function ProfileMemberView({
             <h2 className={styles.profile__main__row__profile__title}>
               Profile
             </h2>
-            <form onSubmit={handleChangeProfile}>
+            <form
+              onSubmit={handleChangeProfile}
+              className={styles.profile__main__row__profile__form}
+            >
               <Input
                 label="Fullname"
                 type="text"
                 name="fullname"
                 defaultValue={profile?.fullname}
                 placeholder="Input your fullname"
+                className={styles.profile__main__row__profile__form__input}
               />
               <Input
                 label="Email"
@@ -207,6 +211,7 @@ export default function ProfileMemberView({
                 name="email"
                 defaultValue={profile?.email}
                 disabled
+                className={styles.profile__main__row__profile__form__input}
               />
               <Input
                 label="Phone"
@@ -214,6 +219,7 @@ export default function ProfileMemberView({
                 name="phone"
                 defaultValue={profile?.phone}
                 placeholder="Input your phone number"
+                className={styles.profile__main__row__profile__form__input}
               />
               <Input
                 label="role"
@@ -221,6 +227,7 @@ export default function ProfileMemberView({
                 name="role"
                 defaultValue={profile?.role}
                 disabled
+                className={styles.profile__main__row__profile__form__input}
               />
               <Button type="submit">
                 {isLoading === "profile" ? "Loading..." : "Update Profile"}
@@ -229,13 +236,17 @@ export default function ProfileMemberView({
           </div>
           <div className={styles.profile__main__row__password}>
             <h2>Change Password</h2>
-            <form onSubmit={handleUpdatePassword}>
+            <form
+              onSubmit={handleUpdatePassword}
+              className={styles.profile__main__row__password__form}
+            >
               <Input
                 label="Old Password"
                 type="password"
                 name="old-password"
                 placeholder="Enter your current password"
                 disabled={profile.type === "google"}
+                className={styles.profile__main__row__password__form__input}
               />
               <Input
                 label="New Password"
@@ -243,6 +254,7 @@ export default function ProfileMemberView({
                 name="new-password"
                 placeholder="Enter your new password"
                 disabled={profile.type === "google"}
+                className={styles.profile__main__row__password__form__input}
               />
               <Button
                 type="submit"

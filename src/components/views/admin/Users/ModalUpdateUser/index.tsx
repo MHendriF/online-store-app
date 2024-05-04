@@ -5,6 +5,7 @@ import Select from "@/components/ui/Select";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import styles from "./ModalUpdateUser.module.scss";
 
 type PropTypes = {
   updatedUser: User | any;
@@ -62,6 +63,7 @@ export default function ModalUpdateUser(props: PropTypes) {
           placeholder="example@mail.com"
           defaultValue={updatedUser.email}
           disabled
+          className={styles.form__input}
         />
         <Input
           label="Fullname"
@@ -70,6 +72,7 @@ export default function ModalUpdateUser(props: PropTypes) {
           placeholder="John Doe"
           defaultValue={updatedUser.fullname}
           disabled
+          className={styles.form__input}
         />
         <Input
           label="Phone"
@@ -78,6 +81,7 @@ export default function ModalUpdateUser(props: PropTypes) {
           placeholder="08123456789"
           defaultValue={updatedUser.phone}
           disabled
+          className={styles.form__input}
         />
         <Select
           label="Role"
@@ -93,6 +97,7 @@ export default function ModalUpdateUser(props: PropTypes) {
               value: "member",
             },
           ]}
+          className={styles.form__input}
         />
         <Button type="submit">{isLoading ? "Updating..." : "Update"}</Button>
       </form>

@@ -1,4 +1,7 @@
 .form {
+  &__input {
+    margin: 20px 0;
+  }
   &__stock {
     display: flex;
     width: 100%;

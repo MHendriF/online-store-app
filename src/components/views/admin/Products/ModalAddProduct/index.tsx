@@ -86,12 +86,15 @@ export default function ModalAddProduct(props: PropTypes) {
     setIsLoading(true);
 
     const form: any = e.target as HTMLFormElement;
+    const stock = stockCount.map((item: any) => {
+      return { size: item.size, qty: parseInt(`${item.qty}`) };
+    });
     const data: any = {
       name: form.name.value,
       category: form.category.value,
-      price: form.price.value,
+      price: parseInt(form.price.value),
       status: form.status.value,
-      stock: stockCount,
+      stock: stock,
       image: "",
     };
 
@@ -99,7 +102,6 @@ export default function ModalAddProduct(props: PropTypes) {
       data,
       session.data?.accessToken
     );
-    console.log(result);
 
     if (result.status === 200) {
       uploadImage(result.data.data.id, form);
@@ -118,12 +120,14 @@ export default function ModalAddProduct(props: PropTypes) {
           name="name"
           type="text"
           placeholder="Insert product name"
+          className={styles.form__input}
         />
         <Input
           label="Price"
           name="price"
           type="number"
           placeholder="Insert product price"
+          className={styles.form__input}
         />
         <Select
           label="Category"
@@ -138,6 +142,7 @@ export default function ModalAddProduct(props: PropTypes) {
               value: "women",
             },
           ]}
+          className={styles.form__input}
         />
         <Select
           label="Status"
@@ -152,6 +157,7 @@ export default function ModalAddProduct(props: PropTypes) {
               value: "false",
             },
           ]}
+          className={styles.form__input}
         />
         <label htmlFor="image">Image</label>
         <div className={styles.form__image}>
@@ -161,12 +167,11 @@ export default function ModalAddProduct(props: PropTypes) {
               alt="image"
               width={200}
               height={200}
-              className={styles.form__image_preview}
+              className={styles.form__image__preview}
             />
           ) : (
             <div className={styles.form__image__placeholder}>No Image</div>
           )}
-
           <InputFile
             name="image"
             uploadedImage={uploadedImage}
@@ -196,6 +201,7 @@ export default function ModalAddProduct(props: PropTypes) {
                 onChange={(e) => {
                   handleStock(e, i, "qty");
                 }}
+                className={styles.form__input}
               />
             </div>
           </div>
