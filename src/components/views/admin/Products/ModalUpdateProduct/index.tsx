@@ -78,6 +78,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
       name: form.name.value,
       category: form.category.value,
       price: parseInt(form.price.value),
+      description: form.description.value,
       status: form.status.value,
       stock: stock,
       image: newImageURL,
@@ -127,6 +128,14 @@ export default function ModalUpdateProduct(props: PropTypes) {
           type="number"
           placeholder="Insert product price"
           defaultValue={updatedProduct.price}
+          className={styles.form__input}
+        />
+        <Input
+          label="Description"
+          name="description"
+          type="text"
+          placeholder="Insert product description"
+          defaultValue={updatedProduct.description}
           className={styles.form__input}
         />
         <Select

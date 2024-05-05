@@ -49,7 +49,7 @@ export default function CartView(props: PropTypes) {
     return total;
   };
 
-  console.log(getTotalPrice());
+  //console.log(getTotalPrice());
 
   return (
     <div className={styles.cart}>
@@ -59,13 +59,15 @@ export default function CartView(props: PropTypes) {
           {cart.map((item: { id: string; size: string; qty: number }) => (
             <Fragment key={`${item.id}-${item.size}`}>
               <div className={styles.cart__main__list__item}>
-                <Image
-                  src={`${getProduct(item.id)?.image}`}
-                  width={150}
-                  height={150}
-                  alt={`${item.id}-${item.size}`}
-                  className={styles.cart__main__list__item__image}
-                />
+                {getProduct(item.id)?.image && (
+                  <Image
+                    src={`${getProduct(item.id)?.image}`}
+                    width={150}
+                    height={150}
+                    alt={`${item.id}-${item.size}`}
+                    className={styles.cart__main__list__item__image}
+                  />
+                )}
                 <div className={styles.cart__main__list__item__info}>
                   <h4 className={styles.cart__main__list__item__info__title}>
                     {getProduct(item.id)?.name}
@@ -84,7 +86,7 @@ export default function CartView(props: PropTypes) {
                       <Select
                         name="size"
                         options={getOptionsSize(item.id, item.size)}
-                      ></Select>
+                      />
                     </label>
                     <label
                       className={styles.cart__main__list__item__info__data__qty}
