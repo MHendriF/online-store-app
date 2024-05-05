@@ -1,5 +1,4 @@
 import CartView from "@/components/views/cart";
-import ProfileMemberView from "@/components/views/member/Profile";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
@@ -13,9 +12,7 @@ type PropTypes = {
 
 export default function CartPage(props: PropTypes) {
   const { setToaster } = props;
-  const [profile, setProfile] = useState<User | {}>({});
   const [cart, setCart] = useState([]);
-  const session: any = useSession();
   const [products, setProducts] = useState([]);
 
   const getAllProducts = async () => {
@@ -23,15 +20,14 @@ export default function CartPage(props: PropTypes) {
     setProducts(data.data);
   };
 
-  const getCart = async (accessToken: string) => {
-    const { data } = await userServices.getCart(accessToken);
+  const getCart = async () => {
+    const { data } = await userServices.getCart();
     setCart(data.data);
-    console.log(data.data);
   };
 
   useEffect(() => {
-    if (session.data?.accessToken) getCart(session.data?.accessToken);
-  }, [session]);
+    getCart();
+  }, []);
 
   useEffect(() => {
     getAllProducts();

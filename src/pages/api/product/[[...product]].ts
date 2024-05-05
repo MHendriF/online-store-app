@@ -33,7 +33,6 @@ export default async function handler(
         token,
         process.env.NEXTAUTH_SECRET || "",
         async (err: any, decoded: any) => {
-          //console.log("decoded: ", decoded);
           if (decoded && decoded.role === "admin") {
             let data = req.body;
             data.created_at = new Date();
@@ -114,7 +113,6 @@ export default async function handler(
   } else if (req.method === "DELETE") {
     const { product }: any = req.query;
     const token = req.headers.authorization?.split(" ")[1] || "";
-    //console.log("product: ", product);
 
     jwt.verify(
       token,

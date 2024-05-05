@@ -17,7 +17,7 @@ type PropTypes = {
 
 export default function DetailProductView(props: PropTypes) {
   const { product, cart, productId, setToaster } = props;
-  const { status, data: session }: any = useSession();
+  const { status }: any = useSession();
   const [selectedSize, setSelectedSize] = useState("");
   const router = useRouter();
 
@@ -39,11 +39,7 @@ export default function DetailProductView(props: PropTypes) {
         newCart = [...cart, { id: productId, size: selectedSize, qty: 1 }];
       }
       try {
-        console.log(newCart);
-        const result = await userServices.addToCart(
-          { carts: newCart },
-          session?.accessToken
-        );
+        const result = await userServices.addToCart({ carts: newCart });
         if (result.status === 200) {
           setSelectedSize("");
           setToaster({

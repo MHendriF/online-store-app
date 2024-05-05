@@ -12,12 +12,10 @@ type PropTypes = {
   setUpdatedUser: Dispatch<SetStateAction<{}>>;
   setUsersData: Dispatch<SetStateAction<User[]>>;
   setToaster: Dispatch<SetStateAction<{}>>;
-  session: any;
 };
 
 export default function ModalUpdateUser(props: PropTypes) {
-  const { updatedUser, setUpdatedUser, setUsersData, setToaster, session } =
-    props;
+  const { updatedUser, setUpdatedUser, setUsersData, setToaster } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -32,12 +30,7 @@ export default function ModalUpdateUser(props: PropTypes) {
       role: form.role.value,
     };
 
-    const result = await userServices.updateUser(
-      updatedUser.id,
-      data,
-      session.data?.accessToken
-    );
-    console.log(result);
+    const result = await userServices.updateUser(updatedUser.id, data);
 
     if (result.status === 200) {
       form.reset();

@@ -57,8 +57,8 @@ export default function ProductsAdminView(props: PropTypes) {
             </thead>
             <tbody>
               {productsData.map((product: Product, i: number) => (
-                <>
-                  <tr key={product.id}>
+                <Fragment key={product.id}>
+                  <tr>
                     <td rowSpan={product.stock.length}>{i + 1}</td>
                     <td rowSpan={product.stock.length}>
                       <Image
@@ -96,17 +96,17 @@ export default function ProductsAdminView(props: PropTypes) {
                   </tr>
                   {product.stock.map(
                     (stock: { size: string; qty: number }, index: number) => (
-                      <>
+                      <Fragment key={stock.size + index}>
                         {index > 0 && (
-                          <tr key={stock.size + index}>
+                          <tr>
                             <td>{stock.size}</td>
                             <td>{stock.qty}</td>
                           </tr>
                         )}
-                      </>
+                      </Fragment>
                     )
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>
@@ -117,7 +117,6 @@ export default function ProductsAdminView(props: PropTypes) {
           setModalAddProduct={setModalAddProduct}
           setProductsData={setProductsData}
           setToaster={setToaster}
-          session={session}
         />
       )}
       {Object.keys(updatedProduct).length > 0 && (
@@ -126,7 +125,6 @@ export default function ProductsAdminView(props: PropTypes) {
           setUpdatedProduct={setUpdatedProduct}
           setProductsData={setProductsData}
           setToaster={setToaster}
-          session={session}
         />
       )}
       {Object.keys(deletedProduct).length && (
@@ -135,7 +133,6 @@ export default function ProductsAdminView(props: PropTypes) {
           setDeletedProduct={setDeletedProduct}
           setProductsData={setProductsData}
           setToaster={setToaster}
-          session={session}
         />
       )}
     </>

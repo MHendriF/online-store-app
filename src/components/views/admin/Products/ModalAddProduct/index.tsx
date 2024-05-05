@@ -14,11 +14,10 @@ type PropTypes = {
   setModalAddProduct: Dispatch<SetStateAction<boolean>>;
   setProductsData: Dispatch<SetStateAction<Product[]>>;
   setToaster: Dispatch<SetStateAction<{}>>;
-  session: any;
 };
 
 export default function ModalAddProduct(props: PropTypes) {
-  const { setModalAddProduct, setProductsData, setToaster, session } = props;
+  const { setModalAddProduct, setProductsData, setToaster } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState([{ size: "", qty: 0 }]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -44,12 +43,7 @@ export default function ModalAddProduct(props: PropTypes) {
             const data = {
               image: newImageURL,
             };
-            const result = await productServices.updateProduct(
-              id,
-              data,
-              session.data?.accessToken
-            );
-            console.log(result);
+            const result = await productServices.updateProduct(id, data);
 
             if (result.status === 200) {
               setIsLoading(false);
@@ -99,10 +93,7 @@ export default function ModalAddProduct(props: PropTypes) {
       image: "",
     };
 
-    const result = await productServices.addProduct(
-      data,
-      session.data?.accessToken
-    );
+    const result = await productServices.addProduct(data);
 
     if (result.status === 200) {
       uploadImage(result.data.data.id, form);

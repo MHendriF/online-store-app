@@ -1,30 +1,36 @@
 import MemberLayout from "@/components/layouts/MemberLayout";
 import styles from "./Profile.module.scss";
-import { useSession } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { uploadFile } from "@/lib/firebase/service";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
 
 type PropTypes = {
-  profile: User | any;
-  setProfile: Dispatch<SetStateAction<{}>>;
-  session: any;
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 
-export default function ProfileMemberView({
-  profile,
-  setProfile,
-  session,
-  setToaster,
-}: PropTypes) {
+export default function ProfileMemberView({ setToaster }: PropTypes) {
   const [changePicture, setChangePicture] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
-  console.log(profile);
+  const [profile, setProfile] = useState<User | any>({});
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = async () => {
+    const { data } = await userServices.getProfile();
+    setProfile(data.data);
+  };
 
   const handleChangeProfilePicture = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,11 +51,7 @@ export default function ProfileMemberView({
             const data = {
               image: newPictureURL,
             };
-            const result = await userServices.updateProfile(
-              data,
-              session.data?.accessToken
-            );
-            console.log(result);
+            const result = await userServices.updateProfile(data);
 
             if (result.status === 200) {
               setIsLoading("");
@@ -64,7 +66,6 @@ export default function ProfileMemberView({
               setIsLoading("");
             }
           } else {
-            console.log("File Kegedean!!!!!!");
             setIsLoading("");
             setChangePicture({});
             setToaster({
@@ -87,11 +88,7 @@ export default function ProfileMemberView({
       phone: form.phone.value,
     };
 
-    const result = await userServices.updateProfile(
-      data,
-      session.data?.accessToken
-    );
-    console.log(result);
+    const result = await userServices.updateProfile(data);
 
     if (result.status === 200) {
       setIsLoading("");
@@ -113,13 +110,9 @@ export default function ProfileMemberView({
       oldPassword: form["old-password"].value,
       encryptedPassword: profile.password,
     };
-    console.log(data);
 
     try {
-      const result = await userServices.updateProfile(
-        data,
-        session.data?.accessToken
-      );
+      const result = await userServices.updateProfile(data);
 
       if (result.status === 200) {
         setIsLoading("");

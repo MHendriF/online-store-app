@@ -14,9 +14,9 @@ type PropTypes = {
 export default function DetailProductPage(props: PropTypes) {
   const { setToaster } = props;
   const { id } = useRouter().query;
-  const session: any = useSession();
   const [product, setProduct] = useState<Product | {}>({});
   const [cart, setCart] = useState([]);
+  const session: any = useSession();
 
   const getDetailProduct = async (id: string) => {
     const { data } = await productServices.getDetailProduct(id);
@@ -24,10 +24,9 @@ export default function DetailProductPage(props: PropTypes) {
     setProduct(data.data);
   };
 
-  const getCart = async (accessToken: string) => {
-    const { data } = await userServices.getCart(accessToken);
+  const getCart = async () => {
+    const { data } = await userServices.getCart();
     setCart(data.data);
-    console.log(data.data);
   };
 
   useEffect(() => {
@@ -35,7 +34,9 @@ export default function DetailProductPage(props: PropTypes) {
   }, [id]);
 
   useEffect(() => {
-    if (session.data?.accessToken) getCart(session.data?.accessToken);
+    if (session.data?.accessToken) {
+      getCart();
+    }
   }, [session]);
 
   return (

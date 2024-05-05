@@ -1,6 +1,6 @@
 import AppShell from "@/components/layouts/AppShell";
 import Toaster from "@/components/ui/Toaster";
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";

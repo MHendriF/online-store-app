@@ -18,7 +18,6 @@ export default function UsersAdminView(props: PropTypes) {
   const [updatedUser, setUpdatedUser] = useState<User | {}>({});
   const [deletedUser, setDeletedUser] = useState<User | {}>({});
   const [usersData, setUsersData] = useState<User[]>([]);
-  //console.log(users);
 
   useEffect(() => {
     setUsersData(users);
@@ -78,7 +77,6 @@ export default function UsersAdminView(props: PropTypes) {
           setUpdatedUser={setUpdatedUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       )}
       {Object.keys(deletedUser).length && (
@@ -87,7 +85,6 @@ export default function UsersAdminView(props: PropTypes) {
           setDeletedUser={setDeletedUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       )}
     </>

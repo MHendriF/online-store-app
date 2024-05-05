@@ -34,7 +34,6 @@ export default function CartView(props: PropTypes) {
       }
     );
     const data = options?.filter((option) => option !== undefined);
-    console.log(data);
     return data;
   };
 
@@ -48,8 +47,6 @@ export default function CartView(props: PropTypes) {
     );
     return total;
   };
-
-  //console.log(getTotalPrice());
 
   return (
     <div className={styles.cart}>

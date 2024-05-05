@@ -20,10 +20,9 @@ export default async function handler(
         token,
         process.env.NEXTAUTH_SECRET || "",
         async (err: any, decoded: any) => {
-          //console.log("decoded: ", decoded);
           if (decoded) {
             const user: any = await retrieveDataById("users", decoded.id);
-            //console.log("profile: ", profile);
+
             if (user) {
               user.id = decoded.id;
               res.status(200).json({
@@ -54,14 +53,10 @@ export default async function handler(
   } else if (req.method === "PUT") {
     const { data } = req.body;
     const token = req.headers.authorization?.split(" ")[1] || "";
-    //console.log("user: ", user);
-
     jwt.verify(
       token,
       process.env.NEXTAUTH_SECRET || "",
       async (err: any, decoded: any) => {
-        //console.log("data: ", data);
-
         if (decoded) {
           await updateData("users", decoded.id, data, (result: boolean) => {
             if (result) {

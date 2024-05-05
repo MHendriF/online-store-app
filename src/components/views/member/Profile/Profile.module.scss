@@ -29,6 +29,8 @@
           justify-content: center;
           font-size: 64px;
           font-weight: bold;
+          object-fit: cover;
+          object-position: center;
         }
         &__label {
           margin-top: 20px;

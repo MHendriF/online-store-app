@@ -15,17 +15,11 @@ type PropTypes = {
   setUpdatedProduct: Dispatch<SetStateAction<{}>>;
   setProductsData: Dispatch<SetStateAction<Product[]>>;
   setToaster: Dispatch<SetStateAction<{}>>;
-  session: any;
 };
 
 export default function ModalUpdateProduct(props: PropTypes) {
-  const {
-    updatedProduct,
-    setUpdatedProduct,
-    setProductsData,
-    setToaster,
-    session,
-  } = props;
+  const { updatedProduct, setUpdatedProduct, setProductsData, setToaster } =
+    props;
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState(updatedProduct.stock);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -83,12 +77,7 @@ export default function ModalUpdateProduct(props: PropTypes) {
       stock: stock,
       image: newImageURL,
     };
-    const result = await productServices.updateProduct(
-      updatedProduct.id,
-      data,
-      session.data?.accessToken
-    );
-    console.log(result);
+    const result = await productServices.updateProduct(updatedProduct.id, data);
 
     if (result.status === 200) {
       setIsLoading(false);

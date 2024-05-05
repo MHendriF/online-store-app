@@ -57,8 +57,10 @@ export async function signInWithGoogle(
 ) {
   const user: any = await retrieveDataByField("users", "email", userData.email);
   if (user.length > 0) {
+    //console.log("update user: ", user.length);
     userData.role = user[0].role;
     userData.updated_at = new Date();
+    userData.id = user[0].id;
     await updateData("users", user[0].id, userData, (status: boolean) => {
       if (status) {
         callback({
@@ -71,13 +73,12 @@ export async function signInWithGoogle(
       }
     });
   } else {
+    //console.log("add user: ", user.length);
     userData.role = "member";
     userData.password = "";
     userData.created_at = new Date();
     userData.updated_at = new Date();
     await addData("users", userData, (status: boolean, res: any) => {
-      console.log(res);
-      console.log(status);
       userData.id = res.path.replace("users/", "");
       if (status) {
         callback({
