@@ -1,16 +1,15 @@
 import styles from "./Login.module.scss";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { ToasterType } from "@/types/toaster.type";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function LoginView({ setToaster }: PropTypes) {
+export default function LoginView() {
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
   const { push, query } = useRouter();
   const callbackUrl: any = query.callbackUrl || "/";

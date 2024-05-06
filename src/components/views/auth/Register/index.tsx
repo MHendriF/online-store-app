@@ -1,16 +1,15 @@
 import styles from "./Register.module.scss";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import authServices from "@/services/auth";
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { ToasterType } from "@/types/toaster.type";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function RegisterView({ setToaster }: PropTypes) {
+export default function RegisterView() {
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
 

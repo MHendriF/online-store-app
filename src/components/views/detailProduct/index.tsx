@@ -5,18 +5,20 @@ import { convertToRupiah } from "@/utils/currency";
 import Button from "@/components/ui/Button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useContext, useState } from "react";
 import userServices from "@/services/user";
+import { ToasterType } from "@/types/toaster.type";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
 type PropTypes = {
   product: Product | any;
   cart: any;
   productId: string | string[] | undefined;
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 export default function DetailProductView(props: PropTypes) {
-  const { product, cart, productId, setToaster } = props;
+  const { product, cart, productId } = props;
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const { status }: any = useSession();
   const [selectedSize, setSelectedSize] = useState("");
   const router = useRouter();

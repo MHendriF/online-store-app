@@ -1,12 +1,8 @@
 import ProductsAdminView from "@/components/views/admin/Products";
 import productServices from "@/services/product";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function AdminProductPage({ setToaster }: PropTypes) {
+export default function AdminProductPage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const getAllProducts = async () => {
@@ -18,7 +14,7 @@ export default function AdminProductPage({ setToaster }: PropTypes) {
 
   return (
     <>
-      <ProductsAdminView products={products} setToaster={setToaster} />
+      <ProductsAdminView products={products} />
     </>
   );
 }

@@ -1,17 +1,13 @@
 import CartView from "@/components/views/cart";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
-import { User } from "@/types/user.type";
-import { useSession } from "next-auth/react";
+import { ToasterType } from "@/types/toaster.type";
 import Head from "next/head";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function CartPage(props: PropTypes) {
-  const { setToaster } = props;
+export default function CartPage() {
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
 

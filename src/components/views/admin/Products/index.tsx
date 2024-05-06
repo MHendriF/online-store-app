@@ -12,12 +12,10 @@ import ModalDeleteProduct from "./ModalDeleteProduct";
 
 type PropTypes = {
   products: Product[];
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 export default function ProductsAdminView(props: PropTypes) {
-  const { products, setToaster } = props;
-  const session: any = useSession();
+  const { products } = props;
   const [modalAddProduct, setModalAddProduct] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
   const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
@@ -116,7 +114,6 @@ export default function ProductsAdminView(props: PropTypes) {
         <ModalAddProduct
           setModalAddProduct={setModalAddProduct}
           setProductsData={setProductsData}
-          setToaster={setToaster}
         />
       )}
       {Object.keys(updatedProduct).length > 0 && (
@@ -124,7 +121,6 @@ export default function ProductsAdminView(props: PropTypes) {
           updatedProduct={updatedProduct}
           setUpdatedProduct={setUpdatedProduct}
           setProductsData={setProductsData}
-          setToaster={setToaster}
         />
       )}
       {Object.keys(deletedProduct).length && (
@@ -132,7 +128,6 @@ export default function ProductsAdminView(props: PropTypes) {
           deletedProduct={deletedProduct}
           setDeletedProduct={setDeletedProduct}
           setProductsData={setProductsData}
-          setToaster={setToaster}
         />
       )}
     </>

@@ -2,22 +2,30 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import styles from "./ModalAddProduct.module.scss";
 import { Product } from "@/types/product.type";
 import productServices from "@/services/product";
 import InputFile from "@/components/ui/InputFile";
 import { uploadFile } from "@/lib/firebase/service";
 import Image from "next/image";
+import { ToasterType } from "@/types/toaster.type";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
 type PropTypes = {
   setModalAddProduct: Dispatch<SetStateAction<boolean>>;
   setProductsData: Dispatch<SetStateAction<Product[]>>;
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 export default function ModalAddProduct(props: PropTypes) {
-  const { setModalAddProduct, setProductsData, setToaster } = props;
+  const { setModalAddProduct, setProductsData } = props;
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState([{ size: "", qty: 0 }]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);

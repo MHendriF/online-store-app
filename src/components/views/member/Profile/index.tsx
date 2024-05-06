@@ -4,21 +4,14 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { uploadFile } from "@/lib/firebase/service";
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
+import { ToasterType } from "@/types/toaster.type";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function ProfileMemberView({ setToaster }: PropTypes) {
+export default function ProfileMemberView() {
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [changePicture, setChangePicture] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
   const [profile, setProfile] = useState<User | any>({});

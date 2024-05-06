@@ -1,18 +1,16 @@
 import DetailProductView from "@/components/views/detailProduct";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
+import { ToasterType } from "@/types/toaster.type";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-export default function DetailProductPage(props: PropTypes) {
-  const { setToaster } = props;
+export default function DetailProductPage() {
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const { id } = useRouter().query;
   const [product, setProduct] = useState<Product | {}>({});
   const [cart, setCart] = useState([]);
@@ -44,12 +42,7 @@ export default function DetailProductPage(props: PropTypes) {
       <Head>
         <title>Detail Products</title>
       </Head>
-      <DetailProductView
-        product={product}
-        cart={cart}
-        productId={id}
-        setToaster={setToaster}
-      />
+      <DetailProductView product={product} cart={cart} productId={id} />
     </>
   );
 }
