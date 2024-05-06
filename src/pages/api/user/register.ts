@@ -1,4 +1,9 @@
 import { signUp } from "@/services/auth/services";
+import {
+  responseApiFailed,
+  responseApiMethodNotAllowed,
+  responseApiSuccess,
+} from "@/utils/responseApi";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -16,15 +21,13 @@ export default async function handler(
       req.body,
       ({ status, message }: { status: boolean; message: string }) => {
         if (status) {
-          res.status(200).json({ status, statusCode: 200, message });
+          responseApiSuccess(res);
         } else {
-          res.status(400).json({ status, statusCode: 400, message });
+          responseApiFailed(res);
         }
       }
     );
   } else {
-    res
-      .status(405)
-      .json({ status: false, statusCode: 405, message: "Method not allowed" });
+    responseApiMethodNotAllowed(res);
   }
 }
