@@ -1,0 +1,27 @@
+.login {
+  &__input {
+    margin: 20px 0;
+  }
+  &__button {
+    width: 100%;
+  }
+  &__devider {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  &__other {
+    width: 100%;
+    &__button {
+      width: 100%;
+      gap: 5px;
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+  &__google {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
