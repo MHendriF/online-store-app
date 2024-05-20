@@ -1,7 +1,7 @@
 import Sidebar from "@/components/fragments/Sidebar";
 import styles from "./AdminLayout.module.scss";
 
-type Proptypes = {
+type PropTypes = {
   children: React.ReactNode;
 };
 
@@ -23,7 +23,7 @@ const listSidebarItem = [
   },
 ];
 
-export default function AdminLayout(props: Proptypes) {
+export default function AdminLayout(props: PropTypes) {
   const { children } = props;
   return (
     <div className={styles.admin}>

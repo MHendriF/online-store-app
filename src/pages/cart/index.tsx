@@ -1,4 +1,4 @@
-import CartView from "@/components/views/cart";
+import CartView from "@/components/views/Cart";
 import Head from "next/head";
 
 export default function CartPage() {

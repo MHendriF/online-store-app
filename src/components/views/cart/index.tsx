@@ -39,7 +39,7 @@ export default function CartView() {
   };
 
   const getOptionsSize = (id: string, selected: string) => {
-    const product = products.find((product) => product.id === id);
+    const product = products.find((product: Product) => product.id === id);
     const options = product?.stock.map(
       (stock: { size: string; qty: number }) => {
         if (stock.qty > 0) {
