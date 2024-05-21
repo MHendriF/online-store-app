@@ -1,4 +1,4 @@
-import DetailProductView from "@/components/views/detailProduct";
+import DetailProductView from "@/components/views/DetailProduct";
 import { ToasterContext } from "@/contexts/ToasterContext";
 import productServices from "@/services/product";
 import userServices from "@/services/user";

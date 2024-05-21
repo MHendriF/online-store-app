@@ -10,6 +10,7 @@ import userServices from "@/services/user";
 import { ToasterContext } from "@/contexts/ToasterContext";
 import { ToasterType } from "@/types/toaster.type";
 import productServices from "@/services/product";
+import Link from "next/link";
 
 export default function CartView() {
   const { setToaster }: ToasterType = useContext(ToasterContext);
@@ -110,7 +111,7 @@ export default function CartView() {
                       {getProduct(item.id)?.name}
                     </h4>
                     <p
-                      className={styles.cart__main__list__item__info__categoory}
+                      className={styles.cart__main__list__item__info__category}
                     >
                       {getProduct(item.id)?.category}
                     </p>
@@ -189,9 +190,11 @@ export default function CartView() {
           <p>{convertToRupiah(getTotalPrice())}</p>
         </div>
         <hr />
-        <Button type="button" className={styles.cart__summary__button}>
-          Checkout
-        </Button>
+        <Link href="/checkout">
+          <Button type="button" className={styles.cart__summary__button}>
+            Checkout
+          </Button>
+        </Link>
       </div>
     </div>
   );
