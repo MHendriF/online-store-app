@@ -1,7 +1,4 @@
 .modal {
-  &__title {
-    margin-bottom: 20px;
-  }
   &__address {
     width: 100%;
     border: 1px solid #ddd;
@@ -10,11 +7,44 @@
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
     gap: 8px;
-    cursor: pointer;
     &--active {
       border: 2px solid #000;
+    }
+    &__info {
+      width: 95%;
+      display: flex;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 8px;
+      &__title {
+        margin-bottom: 20px;
+      }
+    }
+    &__action {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      &__delete,
+      &__change {
+        height: 40px;
+        width: 40px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  &__btn {
+    margin-top: 20px;
+  }
+  &__form {
+    margin-top: 20px;
+    &__group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
   }
 }

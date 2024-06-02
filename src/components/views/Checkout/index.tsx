@@ -25,11 +25,13 @@ export default function CheckoutView() {
   const getProfile = async () => {
     const { data } = await userServices.getProfile();
     setProfile(data.data);
-    data.data.address.filter((address: { isMain: boolean }, id: number) => {
-      if (address.isMain) {
-        setSelectedAddress(id);
-      }
-    });
+    if (data.data?.address?.length > 0) {
+      data.data.address.filter((address: { isMain: boolean }, id: number) => {
+        if (address.isMain) {
+          setSelectedAddress(id);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -60,11 +62,11 @@ export default function CheckoutView() {
       <div className={styles.checkout}>
         <div className={styles.checkout__main}>
           <h1 className={styles.checkout__main__title}>Checkout</h1>
-          {profile?.address?.length > 0 && (
-            <div className={styles.checkout__main__address}>
-              <h3 className={styles.checkout__main__address__title}>
-                Shipping Address
-              </h3>
+          <div className={styles.checkout__main__address}>
+            <h3 className={styles.checkout__main__address__title}>
+              Shipping Address
+            </h3>
+            {profile?.address?.length > 0 ? (
               <div className={styles.checkout__main__address__selected}>
                 <h4 className={styles.checkout__main__address__selected__title}>
                   {profile?.address?.[selectedAddress]?.recipient} {" - "}
@@ -82,8 +84,13 @@ export default function CheckoutView() {
                   Change Address
                 </Button>
               </div>
-            </div>
-          )}
+            ) : (
+              <Button type="button" onClick={() => setChangeAddress(true)}>
+                Add New Address
+              </Button>
+            )}
+          </div>
+
           {profile?.carts?.length > 0 ? (
             <div className={styles.checkout__main__list}>
               {profile?.carts?.map(
@@ -172,7 +179,8 @@ export default function CheckoutView() {
       </div>
       {changeAddress && (
         <ModalChangeAddress
-          address={profile.address}
+          profile={profile}
+          setProfile={setProfile}
           setChangeAddress={setChangeAddress}
           setSelectedAddress={setSelectedAddress}
           selectedAddress={selectedAddress}
