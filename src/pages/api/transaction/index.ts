@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { updateData } from "@/lib/firebase/service";
 import createTransaction from "@/lib/midtrans/transaction";
-import { responseApiSuccess } from "@/utils/responseApi";
+import { responseApiFailed, responseApiSuccess } from "@/utils/responseApi";
+import { verifyToken } from "@/utils/verifyToken";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -9,24 +11,49 @@ type Data = {
   message: string;
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "POST") {
-    const generateOrderId = `${Date.now()}-${Math.random().toString(16)}`;
-    const params = {
-      transaction_details: {
-        order_id: generateOrderId,
-        gross_amount: 500000,
-      },
-      customer_details: {
-        first_name: "John",
-        email: "john@example.com",
-        phone: "081234567890",
-      },
-    };
-    console.log(req.body);
-    createTransaction(params, (transaction: { token: string; redirect_url: string }) => {
-      console.log(transaction);
-      responseApiSuccess(res, transaction);
+    verifyToken(req, res, false, async (decoded: { id: string }) => {
+      const payload = req.body;
+      delete payload.user.address.isMain;
+
+      const generateOrderId = `${Date.now()}-${Math.random().toString(16)}`;
+      const params = {
+        transaction_details: {
+          order_id: generateOrderId,
+          gross_amount: payload.transaction.total,
+        },
+        customer_details: {
+          first_name: payload.user.fullname,
+          email: payload.user.email,
+          phone: payload.user.address.phone,
+        },
+      };
+      console.log("🚀 ~ verifyToken ~ params:", params);
+      createTransaction(params, async (transaction: { token: string; redirect_url: string }) => {
+        const data = {
+          transaction: {
+            ...payload.transaction,
+            address: payload.user.address,
+            token: transaction.token,
+            redirect_url: transaction.redirect_url,
+            status: "pending",
+          },
+          carts: [],
+        };
+        console.log("🚀 ~ createTransaction ~ data:", data);
+        await updateData("users", decoded.id, data, (result: boolean) => {
+          if (result) {
+            console.log("🚀 ~ updateData ~ result:", result);
+            responseApiSuccess(res, {
+              token: transaction.token,
+              redirect_url: transaction.redirect_url,
+            });
+          } else {
+            responseApiFailed(res);
+          }
+        });
+      });
     });
   }
 }

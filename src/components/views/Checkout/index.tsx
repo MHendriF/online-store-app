@@ -9,6 +9,14 @@ import { ToasterContext } from "@/contexts/ToasterContext";
 import { ToasterType } from "@/types/toaster.type";
 import productServices from "@/services/product";
 import ModalChangeAddress from "./ModalChangeAddress";
+import Script from "next/script";
+import transactionServices from "@/services/transaction";
+
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
 
 export default function CheckoutView() {
   const { setToaster }: ToasterType = useContext(ToasterContext);
@@ -47,34 +55,49 @@ export default function CheckoutView() {
   };
 
   const getTotalPrice = () => {
-    const total = profile?.carts?.reduce(
-      (acc: number, item: { id: string; size: string; qty: number }) => {
-        const product: any = getProduct(item.id);
-        return acc + parseInt(product?.price) * item.qty;
-      },
-      0
-    );
+    const total = profile?.carts?.reduce((acc: number, item: { id: string; size: string; qty: number }) => {
+      const product: any = getProduct(item.id);
+      return acc + parseInt(product?.price) * item.qty;
+    }, 0);
     return total;
+  };
+
+  const handleCheckout = async () => {
+    const payload = {
+      user: {
+        fullname: profile.fullname,
+        email: profile.email,
+        address: profile.address[selectedAddress],
+      },
+      transaction: {
+        items: profile.carts,
+        total: getTotalPrice(),
+      },
+    };
+    const { data } = await transactionServices.generateTransaction(payload);
+    console.log("🚀 ~ handleCheckout ~ data:", data);
+    window.snap.pay(data.data.token);
   };
 
   return (
     <>
+      <Script
+        src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+        strategy="lazyOnload"
+      />
       <div className={styles.checkout}>
         <div className={styles.checkout__main}>
           <h1 className={styles.checkout__main__title}>Checkout</h1>
           <div className={styles.checkout__main__address}>
-            <h3 className={styles.checkout__main__address__title}>
-              Shipping Address
-            </h3>
+            <h3 className={styles.checkout__main__address__title}>Shipping Address</h3>
             {profile?.address?.length > 0 ? (
               <div className={styles.checkout__main__address__selected}>
                 <h4 className={styles.checkout__main__address__selected__title}>
                   {profile?.address?.[selectedAddress]?.recipient} {" - "}
                   {profile?.address?.[selectedAddress]?.phone}
                 </h4>
-                <p
-                  className={styles.checkout__main__address__selected__address}
-                >
+                <p className={styles.checkout__main__address__selected__address}>
                   {profile?.address?.[selectedAddress]?.addressLine}
                 </p>
                 <p className={styles.checkout__main__address__selected__note}>
@@ -93,62 +116,40 @@ export default function CheckoutView() {
 
           {profile?.carts?.length > 0 ? (
             <div className={styles.checkout__main__list}>
-              {profile?.carts?.map(
-                (item: { id: string; size: string; qty: number }) => (
-                  <Fragment key={`${item.id}-${item.size}`}>
-                    <div className={styles.checkout__main__list__item}>
-                      {getProduct(item.id)?.image && (
-                        <Image
-                          src={`${getProduct(item.id)?.image}`}
-                          width={150}
-                          height={150}
-                          alt={`${item.id}-${item.size}`}
-                          className={styles.checkout__main__list__item__image}
-                        />
-                      )}
-                      <div className={styles.checkout__main__list__item__info}>
-                        <h4
-                          className={
-                            styles.checkout__main__list__item__info__title
-                          }
-                        >
-                          {getProduct(item.id)?.name}
-                        </h4>
-                        <div
-                          className={
-                            styles.checkout__main__list__item__info__data
-                          }
-                        >
-                          <label
-                            className={
-                              styles.checkout__main__list__item__info__data__size
-                            }
-                          >
-                            Size : {item.size}
-                          </label>
-                          <label
-                            className={
-                              styles.checkout__main__list__item__info__data__qty
-                            }
-                          >
-                            Quantity : {item.qty}
-                          </label>
-                        </div>
+              {profile?.carts?.map((item: { id: string; size: string; qty: number }) => (
+                <Fragment key={`${item.id}-${item.size}`}>
+                  <div className={styles.checkout__main__list__item}>
+                    {getProduct(item.id)?.image && (
+                      <Image
+                        src={`${getProduct(item.id)?.image}`}
+                        width={150}
+                        height={150}
+                        alt={`${item.id}-${item.size}`}
+                        className={styles.checkout__main__list__item__image}
+                      />
+                    )}
+                    <div className={styles.checkout__main__list__item__info}>
+                      <h4 className={styles.checkout__main__list__item__info__title}>{getProduct(item.id)?.name}</h4>
+                      <div className={styles.checkout__main__list__item__info__data}>
+                        <label className={styles.checkout__main__list__item__info__data__size}>
+                          Size : {item.size}
+                        </label>
+                        <label className={styles.checkout__main__list__item__info__data__qty}>
+                          Quantity : {item.qty}
+                        </label>
                       </div>
-                      <h4 className={styles.checkout__main__list__item__price}>
-                        {convertToRupiah(getProduct(item.id)?.price)}
-                      </h4>
                     </div>
-                    <hr className={styles.checkout__main__list__divider} />
-                  </Fragment>
-                )
-              )}
+                    <h4 className={styles.checkout__main__list__item__price}>
+                      {convertToRupiah(getProduct(item.id)?.price)}
+                    </h4>
+                  </div>
+                  <hr className={styles.checkout__main__list__divider} />
+                </Fragment>
+              ))}
             </div>
           ) : (
             <div className={styles.checkout__main__empty}>
-              <h1 className={styles.checkout__main__empty__title}>
-                Your cart is empty
-              </h1>
+              <h1 className={styles.checkout__main__empty__title}>Your cart is empty</h1>
             </div>
           )}
         </div>
@@ -172,7 +173,7 @@ export default function CheckoutView() {
             <p>{convertToRupiah(getTotalPrice())}</p>
           </div>
           <hr />
-          <Button type="button" className={styles.checkout__summary__button}>
+          <Button type="button" className={styles.checkout__summary__button} onClick={() => handleCheckout()}>
             Process Payment
           </Button>
         </div>
